@@ -1,0 +1,84 @@
+<?php
+//include connect.php to check for connection
+include('connect.php');
+// Post variables from the form
+$firstname = $_POST["firstname"];
+$lastname = $_POST["lastname"];
+$phonenumber = $_POST["phonenumber"];
+$email = $_POST["email"];
+$address = $_POST["address"];
+$city = $_POST["city"];
+$state = $_POST["state"];
+$username = $_POST["username"];
+$password = $_POST["password"];
+$balance = 0;
+$date = date_default_timezone_set("Africa/Lagos");
+$date = date("F d, Y, g: i a");
+
+
+// check if phone number existed previously
+$query = "SELECT phonenumber FROM `users` WHERE phonenumber='$phonenumber'";
+$result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$count = mysqli_num_rows($result);
+
+// if phonenumber exist, deny registration
+if ($count > 0){
+echo "<script>alert('Phone Number already exist!!!'); window.location.replace('register.php');</script>";
+exit;
+
+}
+
+//check if email exist previously
+
+
+$query = "SELECT email FROM `users` WHERE email='$email'";
+$result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$count = mysqli_num_rows($result);
+
+// if email exist, deny registration
+if ($count > 0){
+echo "<script>alert('Email already exist!!!'); window.location.replace('register.php');</script>";
+exit;
+
+}
+
+//check if username exist previously
+
+$query = "SELECT username FROM `users` WHERE username='$username'";
+$result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$count = mysqli_num_rows($result);
+
+// if username exist, deny registration
+if ($count > 0){
+echo "<script>alert('Username already exist!!!'); window.location.replace('register.php');</script>";
+}
+
+else {
+//Register user
+// insert details into the database
+$sql = "INSERT INTO `users` (firstname, lastname, phonenumber, email, address, city, state, balance, username, password, time) 
+VALUES ('$firstname', '$lastname', '$phonenumber', '$email', '$address', '$city', '$state', '$balance', '$username', '$password', NOW())";
+
+if (($conn->query($sql))=== true){
+
+// what to execute once all the required conditions are met
+echo "<script>alert('REGISTRATION SUCCESSFUL!!!'); window.location.replace('login.php');</script>";
+
+}
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+?>
